@@ -19,26 +19,26 @@ FEATURE_COLS = [
 ]
 
 def preprocess(df, is_train=True):
-    # Drop identifier columns if present
+   
     for col in ['Product ID', 'UDI','Target']:
         if col in df.columns:
             df.drop(col, axis=1, inplace=True)    
 
-    # Map 'Type' column
+    
     if 'Type' in df.columns:
         df['type'] = df['Type'].map({'M': 0, 'L': 1, 'H': 2})
         df.drop('Type', axis=1, inplace=True)
 
-    # If training, split X and y
+    
     if is_train and 'Failure Type' in df.columns:
         y = df['Failure Type']
         X = df.drop('Failure Type', axis=1)
 
-        # Keep only numeric features
+       
         X = X.select_dtypes(include=['number'])
         return X, y
     else:
-        # For prediction, keep only numeric
+        
         df = df.select_dtypes(include=['number'])
         return df
 
